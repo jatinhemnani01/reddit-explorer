@@ -1,6 +1,6 @@
 {
-  "name": "TODO",
-  "description": "TODO",
+  "name": "reddit-explorer",
+  "description": "Reddit-Explorer",
   "version": "0.0.1",
   "scripts": {
     "dev": "sapper dev --hot=false",

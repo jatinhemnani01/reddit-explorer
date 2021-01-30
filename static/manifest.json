@@ -1,10 +1,10 @@
 {
 	"background_color": "#ffffff",
 	"theme_color": "#333333",
-	"name": "TODO",
-	"short_name": "TODO",
-	"display": "minimal-ui",
-	"start_url": "/",
+	"name": "Reddit-Explorer",
+	"short_name": "Reddit-Explorer",
+	"display": "standalone",
+	"start_url": "/home",
 	"icons": [
 		{
 			"src": "logo-192.png",
