@@ -2,25 +2,30 @@
   // ALL IMPORTS
   import { onMount } from "svelte";
   import PostCard from "./PostCard.svelte";
+  import LoadMore from "./LoadMore.svelte";
   // ALL IMPORTS
 
   //   VARIABLES AND LISTS
   let posts = [];
+  let after = "";
   let isError = false;
   let subreddit = "wallstreetbets";
   let badge = "hot";
-  let loading = true;
+  $: loading = true;
 
   //   VARIABLES AND LISTS
 
   //   GET REDDIT POSTS
-  const getPost = async (subReddit, Badge) => {
+  const getPost = async (subReddit, Badge, afterPost) => {
     try {
       let res = await fetch(
-        `https://www.reddit.com/r/${subReddit}/${Badge}.json?limit=10`
+        `https://www.reddit.com/r/${subReddit}/${Badge}.json?` +
+          "limit=20" +
+          `&after=${afterPost}`
       );
       let data = await res.json();
       let post = data.data.children;
+      after = data.data.after;
       posts = post;
       loading = false;
       isError = false;
@@ -64,6 +69,7 @@
 <!-- FORM -->
 <form class="form" on:submit|preventDefault={handleSubmit}>
   <!-- <input type="text" bind:value={subreddit} /> -->
+  <label for="r/">r/</label>
   <input
     bind:value={subreddit}
     class="searchfield"
@@ -91,16 +97,28 @@
 <!-- LOADING AND ERROR HANDLING -->
 
 <!-- LOOPING POST FROM API -->
+
 {#each posts as post}
   <PostCard
     title={post.data.title}
     img_url={post.data.url_overridden_by_dest}
+    desc={post.data.selftext}
+    url={"https://reddit.com" + post.data.permalink}
   />
+
   <!-- <PostCard
     img_url="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/gettyimages-912883678-1610452019.jpg?crop=0.6650390625xw:1xh;center,top&resize=640:*"
     title="Test"
   /> -->
 {/each}
+<LoadMore
+  on:click={() => {
+    loading = true;
+    getPost(subreddit, badge, after);
+    window.scroll(0, 0);
+    loading = false;
+  }}
+/>
 
 <!-- LOOPING POST FROM API -->
 <style>
@@ -111,8 +129,12 @@
   }
   #update-btn {
     cursor: pointer;
-    width: 10%;
+    width: 20%;
     margin-right: 20px;
+  }
+  label {
+    font-size: 1.2em;
+    padding: 0.3em;
   }
   .searchfield {
     width: 40%;
@@ -124,7 +146,7 @@
     display: flex;
     color: white;
     width: 50%;
-    background: purple;
+    background: #ff4757;
     align-items: center;
     justify-content: space-evenly;
     list-style-type: none;
@@ -133,7 +155,16 @@
   .trend-badge li {
     padding: 0.3em;
     width: 100%;
-    border: solid 1px white;
     cursor: pointer;
+    transition: ease 0.2s;
+  }
+  .trend-badge li:hover {
+    background-color: #eee;
+    color: black;
+  }
+  @media screen and (max-width: 670px) {
+    .searchfield {
+      width: 30%;
+    }
   }
 </style>

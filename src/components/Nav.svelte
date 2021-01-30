@@ -16,7 +16,7 @@
     display: flex;
     flex-wrap: wrap;
     padding: 1em;
-    background-color: cyan;
+    background-color: #747d8c;
   }
   nav a {
     margin: 0.5em;
