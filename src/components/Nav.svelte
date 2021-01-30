@@ -12,6 +12,7 @@
 
 <style>
   nav {
+    margin: 0px;
     display: flex;
     flex-wrap: wrap;
     padding: 1em;

@@ -3,3 +3,5 @@
     this.redirect(302, "/home");
   }
 </script>
+
+<h1>Index</h1>
